@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#101a2a" />
+    <meta name="description" content="Jogo da Forca com desafios, progressão e recompensas." />
+    <title>Forca — jogo de palavras</title>
+    <link rel="stylesheet" href="./src/index.css" />
+    <script type="module" src="./src/script.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <section id="player-screen" class="screen active" aria-live="polite">
+        <div class="auth-card">
+          <div class="brand-badge">FORCA</div>
+          <p class="eyebrow">JORNADA COGNITIVA</p>
+          <h1 id="welcome-title">Olá!</h1>
+          <p id="welcome-subtitle" class="subtitle">Como podemos chamar você?</p>
+
+          <label class="sr-only" for="player-name">Nome do jogador</label>
+          <input id="player-name" type="text" maxlength="18" placeholder="Seu nome" autocomplete="off" />
+
+          <div class="auth-actions">
+            <button id="enter-player" type="button">Entrar</button>
+            <button id="switch-user" type="button" class="secondary hidden">Trocar usuário</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="menu-screen" class="screen hidden" aria-live="polite">
+        <header class="dashboard-header">
+          <div class="brand-row">
+            <div class="mini-logo">F</div>
+            <span>FORCA</span>
+          </div>
+          <div class="user-chip">
+            <span id="player-name-badge">Dani</span>
+            <span class="fire">🔥</span>
+            <strong id="player-streak">12</strong>
+          </div>
+        </header>
+
+        <main class="menu-layout">
+          <aside class="menu-panel left-panel">
+            <p class="eyebrow">TREINE SUA MENTE</p>
+            <h2>Escolha seu desafio</h2>
+
+            <div id="category-list" class="category-list" aria-label="Categorias"></div>
+
+            <div class="difficulty-group" aria-label="Níveis de dificuldade">
+              <button class="difficulty-button active" data-difficulty="easy" type="button">Fácil</button>
+              <button class="difficulty-button" data-difficulty="medium" type="button">Médio</button>
+              <button class="difficulty-button" data-difficulty="hard" type="button">Difícil</button>
+            </div>
+
+            <button id="start-game" class="primary-button" type="button">Jogar</button>
+          </aside>
+
+          <aside class="menu-panel right-panel">
+            <div class="status-row">
+              <div>
+                <span class="label">Sequência</span>
+                <strong id="menu-win-streak">0</strong>
+              </div>
+              <div>
+                <span class="label">Nível</span>
+                <strong id="menu-level">1</strong>
+              </div>
+              <div>
+                <span class="label">Saúde</span>
+                <strong id="menu-cognitive">0</strong>
+              </div>
+              <div>
+                <span class="label">Letras seguidas</span>
+                <strong id="menu-letter-streak">0</strong>
+              </div>
+            </div>
+
+            <div class="panel-card">
+              <div class="panel-head">
+                <span>Ranking da comunidade</span>
+                <span class="ghost">#<strong id="player-rank">41</strong></span>
+              </div>
+              <p class="mock-note">Demonstração com dados simulados</p>
+              <ul id="ranking-list" class="ranking-list"></ul>
+            </div>
+
+            <div class="panel-card journey-card">
+              <div class="panel-head">
+                <span>Sua jornada</span>
+                <span id="journey-level" class="ghost">Nível 1</span>
+              </div>
+              <div class="journey-content">
+                <span id="journey-avatar" class="journey-avatar" aria-hidden="true">🌱</span>
+                <div class="journey-copy">
+                  <strong id="journey-stage">Uma nova jornada começa</strong>
+                  <span id="journey-next">Jogue para cultivar sua sequência</span>
+                </div>
+              </div>
+              <div class="progress-bar"><span id="journey-fill"></span></div>
+            </div>
+
+            <div class="panel-card small">
+              <div class="panel-head">
+                <span>Recompensas</span>
+                <span class="ghost" id="reward-badge">Básica</span>
+              </div>
+              <div id="reward-summary" class="reward-summary"></div>
+              <p class="mock-note">Marcos do jogo liberados por sequência de vitórias.</p>
+            </div>
+
+            <div class="panel-card small">
+              <div class="panel-head"><span>Conquistas</span></div>
+              <ul id="achievement-list" class="achievement-list"></ul>
+            </div>
+
+            <div class="panel-card community-card">
+              <div class="panel-head"><span>Agora na Forca</span><span class="online-indicator">SIMULADO</span></div>
+              <div class="community-stats">
+                <div><strong id="online-count">1.284</strong><span>jogando agora</span></div>
+                <div><strong id="category-online-count">326</strong><span>nesta categoria</span></div>
+              </div>
+            </div>
+
+            <div class="panel-card small">
+              <div class="panel-head">
+                <span>Atividade cognitiva</span>
+              </div>
+              <div class="progress-bar"><span id="health-fill"></span></div>
+              <small id="health-copy">+0 pontos de treino mental</small>
+            </div>
+
+            <div class="panel-card support-card">
+              <div class="panel-head"><span>Apoie o projeto</span></div>
+              <div class="support-content">
+                <div class="qr-placeholder" role="img" aria-label="Espaço demonstrativo para QR Code, sem cobrança ativa"></div>
+                <div>
+                  <strong>Ajude a manter o jogo gratuito</strong>
+                  <p>QR Code demonstrativo. Nenhuma cobrança é realizada.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-card small plus-card">
+              <div class="panel-head"><span>Conta Plus</span><span class="online-indicator">CONCEITO</span></div>
+              <p class="plus-copy">Partidas sem anúncios, estatísticas avançadas e benefícios especiais.</p>
+              <button id="plus-info" class="text-button" type="button">Conhecer benefícios</button>
+            </div>
+          </aside>
+        </main>
+      </section>
+
+      <section id="game-screen" class="screen hidden" aria-live="polite">
+        <header class="game-header">
+          <div class="brand-row">
+            <div class="mini-logo">F</div>
+            <span>FORCA</span>
+          </div>
+
+          <div class="header-meta">
+            <span id="header-player">Jogador</span>
+            <span class="meta-divider">|</span>
+            <span id="header-category">Geral</span>
+          </div>
+        </header>
+
+        <main class="game-layout">
+          <section class="drawing-panel">
+            <div class="panel-head drawing-head">
+              <span class="section-label">A FORCA</span>
+              <span id="drawing-caption" class="caption">Tudo tranquilo</span>
+            </div>
+
+            <div id="gallows" class="gallows" role="img" aria-label="Forca em andamento">
+              <svg class="gallows-art" viewBox="0 0 320 340" aria-hidden="true">
+                <line class="gallows-ground" x1="28" y1="298" x2="290" y2="298" />
+                <line class="gallows-frame" x1="80" y1="298" x2="80" y2="78" />
+                <line class="gallows-frame" x1="80" y1="78" x2="220" y2="78" />
+                <line class="gallows-frame" x1="220" y1="78" x2="220" y2="112" />
+                <circle class="gallows-person" data-part="1" cx="220" cy="134" r="22" />
+                <line class="gallows-person" data-part="2" x1="220" y1="156" x2="220" y2="228" />
+                <line class="gallows-person" data-part="3" x1="220" y1="176" x2="185" y2="214" />
+                <line class="gallows-person" data-part="4" x1="220" y1="176" x2="255" y2="214" />
+                <line class="gallows-person" data-part="5" x1="220" y1="228" x2="188" y2="274" />
+                <line class="gallows-person" data-part="6" x1="220" y1="228" x2="252" y2="274" />
+              </svg>
+            </div>
+
+            <div class="meter-box">
+              <div class="meter-topline">
+                <span>Progressão</span>
+                <strong><span id="remaining-count">06</span> / <span id="max-count">06</span></strong>
+              </div>
+              <div class="progress-bar big"><span id="meter-fill"></span></div>
+              <small id="meter-caption">A aventura começa agora.</small>
+            </div>
+          </section>
+
+          <section class="play-panel">
+            <div id="game-status" class="status-line" role="status" aria-live="polite">
+              <span class="status-icon">?</span>
+              <span id="status-text">Use o teclado ou clique nas letras.</span>
+            </div>
+
+            <div class="live-game-stats" aria-label="Progresso da jornada">
+              <div><span>Sequência de letras</span><strong id="game-letter-streak">0</strong></div>
+              <div><span>Vitórias seguidas</span><strong id="game-win-streak">0</strong></div>
+              <div><span>Atividade cognitiva</span><strong id="game-cognitive-score">0</strong></div>
+            </div>
+
+            <div class="word-area">
+              <div class="word-topline">
+                <span class="section-label">PALAVRA SECRETA</span>
+                <span id="word-hint" class="word-hint">DICA</span>
+              </div>
+
+              <div class="word-slots-wrap">
+                <div id="word-slots" class="word-slots" role="group" aria-label="Palavra secreta"></div>
+              </div>
+
+              <div class="word-progress-copy"><span>Palavra descoberta</span><strong id="word-progress-label">0 / 0</strong></div>
+              <div class="progress-bar word-progress"><span id="word-progress-fill"></span></div>
+              <p class="word-meta"><span id="word-length">0</span> letras · categoria <span id="word-category">Geral</span></p>
+            </div>
+
+            <div class="used-area">
+              <div class="used-header">
+                <span class="section-label">LETRAS USADAS</span>
+                <span id="used-count" class="used-count">(0)</span>
+              </div>
+              <div id="used-letters" class="used-letters" aria-live="polite"></div>
+            </div>
+
+            <div class="keyboard-wrap">
+              <div id="virtual-keyboard" class="virtual-keyboard" aria-label="Teclado virtual"></div>
+            </div>
+          </section>
+        </main>
+      </section>
+
+      <section id="result-screen" class="screen hidden" aria-live="polite">
+        <div class="result-card">
+          <div id="result-symbol" class="result-symbol" aria-hidden="true">🏆</div>
+          <p id="result-eyebrow" class="eyebrow">VITÓRIA</p>
+          <h2 id="result-title">Você venceu!</h2>
+          <p id="result-message" class="result-message">Você descobriu a palavra!</p>
+          <p id="result-word" class="result-word">Palavra: JAVASCRIPT</p>
+
+          <div class="result-stats">
+            <div><span>+ pontos</span><strong id="result-points">120</strong></div>
+            <div><span>Sequência</span><strong id="result-streak">7</strong></div>
+            <div><span>Atividade cognitiva</span><strong id="result-health">+15</strong></div>
+          </div>
+
+          <div class="result-badges">
+            <span id="result-achievement">🏆 Nova conquista</span>
+            <span id="result-reward">🎁 Recompensa</span>
+          </div>
+
+          <div class="ad-card">
+            <p>CONHEÇA O PARCEIRO</p>
+            <span>Anúncio mockado</span>
+            <button type="button">Saiba mais</button>
+          </div>
+
+          <div class="result-actions">
+            <button id="play-again" class="primary-button" type="button">Jogar de novo</button>
+            <button id="back-menu" class="secondary-button" type="button">Voltar ao menu</button>
+          </div>
+        </div>
+      </section>
+
+      <dialog id="plus-dialog" class="plus-dialog" aria-labelledby="plus-title">
+        <form method="dialog">
+          <button class="dialog-close" aria-label="Fechar">×</button>
+        </form>
+        <p class="eyebrow">CONTA PLUS · DEMONSTRAÇÃO</p>
+        <h2 id="plus-title">Mais jogo, sem anúncios.</h2>
+        <p>Uma proposta futura com partidas sem publicidade, estatísticas avançadas e benefícios especiais. Não há assinatura nem pagamento habilitado.</p>
+        <ul>
+          <li>Partidas sem anúncios</li>
+          <li>Recompensas diferenciadas</li>
+          <li>Acesso antecipado a categorias</li>
+        </ul>
+        <form method="dialog"><button class="primary-button">Entendi</button></form>
+      </dialog>
+    </div>
+  </body>
+</html>
